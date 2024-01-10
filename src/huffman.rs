@@ -6,13 +6,13 @@ use std::{
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub(crate) struct TreeNode {
-    val: Option<char>,
-    frequency: usize,
-    left: Option<TreeNodeRef>,
-    right: Option<TreeNodeRef>,
+    pub(crate) val: Option<char>,
+    pub(crate) frequency: usize,
+    pub(crate) left: Option<TreeNodeRef>,
+    pub(crate) right: Option<TreeNodeRef>,
 }
 
-type TreeNodeRef = Rc<RefCell<TreeNode>>;
+pub(crate) type TreeNodeRef = Rc<RefCell<TreeNode>>;
 
 impl Ord for TreeNode {
     fn cmp(&self, other: &Self) -> std::cmp::Ordering {
@@ -65,7 +65,6 @@ mod tests {
 
     #[test]
     fn test_build_huffman_tree() {
-        // Example frequency map
         let freq_map: HashMap<char, usize> = [
             ('a', 5),
             ('b', 9),
@@ -78,11 +77,8 @@ mod tests {
         .cloned()
         .collect();
 
-        // Build the Huffman Tree
         if let Some(root) = TreeNode::build_huffman_tree(&freq_map) {
-            // Perform assertions on the tree structure, e.g., check the root's frequency
             assert_eq!(root.borrow().frequency, 100);
-            println!("{root:?}");
         } else {
             panic!("Failed to build Huffman Tree");
         }
