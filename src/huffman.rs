@@ -1,12 +1,12 @@
 use std::{
     cell::RefCell,
-    collections::{BinaryHeap, HashMap},
+    collections::{BTreeMap, BinaryHeap},
     rc::Rc,
 };
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub(crate) struct TreeNode {
-    pub(crate) val: Option<char>,
+    pub(crate) val: Option<u8>,
     pub(crate) frequency: usize,
     pub(crate) left: Option<TreeNodeRef>,
     pub(crate) right: Option<TreeNodeRef>,
@@ -16,7 +16,7 @@ pub(crate) type TreeNodeRef = Rc<RefCell<TreeNode>>;
 
 impl Ord for TreeNode {
     fn cmp(&self, other: &Self) -> std::cmp::Ordering {
-        self.frequency.cmp(&other.frequency)
+        other.frequency.cmp(&self.frequency)
     }
 }
 
@@ -27,12 +27,12 @@ impl PartialOrd for TreeNode {
 }
 
 impl TreeNode {
-    pub(crate) fn build_huffman_tree(freq_char: &HashMap<char, usize>) -> Option<TreeNodeRef> {
+    pub(crate) fn build_huffman_tree(freq_char: &BTreeMap<u8, usize>) -> Option<TreeNodeRef> {
         let mut heap: BinaryHeap<TreeNodeRef> = BinaryHeap::new();
 
-        for (&char, &freq) in freq_char {
+        for (&byte, &freq) in freq_char {
             let node = Rc::new(RefCell::new(TreeNode {
-                val: Some(char),
+                val: Some(byte),
                 frequency: freq,
                 left: None,
                 right: None,
@@ -65,17 +65,14 @@ mod tests {
 
     #[test]
     fn test_build_huffman_tree() {
-        let freq_map: HashMap<char, usize> = [
-            ('a', 5),
-            ('b', 9),
-            ('c', 12),
-            ('d', 13),
-            ('e', 16),
-            ('f', 45),
-        ]
-        .iter()
-        .cloned()
-        .collect();
+        let freq_map: BTreeMap<u8, usize> = BTreeMap::from([
+            (b'a', 5),
+            (b'b', 9),
+            (b'c', 12),
+            (b'd', 13),
+            (b'e', 16),
+            (b'f', 45),
+        ]);
 
         if let Some(root) = TreeNode::build_huffman_tree(&freq_map) {
             assert_eq!(root.borrow().frequency, 100);
