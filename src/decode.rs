@@ -17,7 +17,6 @@ pub mod decoder {
         huffman::{TreeNode, TreeNodeRef},
         DecodeOpt,
     };
-
     use std::{
         borrow::BorrowMut,
         collections::BTreeMap,

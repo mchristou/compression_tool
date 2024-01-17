@@ -13,12 +13,16 @@ impl EncodeOpt {
 }
 
 pub mod encoder {
-    use crate::huffman::{TreeNode, TreeNodeRef};
-    use crate::EncodeOpt;
-    use std::collections::{BTreeMap, VecDeque};
-    use std::fmt::Write as FmtWrite;
-    use std::fs::File;
-    use std::io::{self, Read, Seek, SeekFrom, Write};
+    use crate::{
+        huffman::{TreeNode, TreeNodeRef},
+        EncodeOpt,
+    };
+    use std::{
+        collections::{BTreeMap, VecDeque},
+        fmt::Write as FmtWrite,
+        fs::File,
+        io::{self, Read, Seek, SeekFrom, Write},
+    };
 
     pub fn encode(args: EncodeOpt) -> Result<(), Box<dyn std::error::Error>> {
         let file = File::open(args.input)?;
